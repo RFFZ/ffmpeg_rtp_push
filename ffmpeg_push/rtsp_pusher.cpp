@@ -78,6 +78,28 @@ RtspPusher::~RtspPusher() {
 }
 
 
+
+/*
+客户端                          服务器
+   │                               │
+   │──── OPTIONS ────────────────→ │  问：你支持哪些方法？
+   │←─── 200 OK (Public: ...) ──── │  答：支持 ANNOUNCE/SETUP/RECORD 等
+   │                               │
+   │──── ANNOUNCE (带SDP) ───────→ │  告知：我要推这种格式的流
+   │←─── 200 OK ─────────────────── │
+   │                               │
+   │──── SETUP ──────────────────→ │  建立视频传输通道
+   │←─── 200 OK ─────────────────── │
+   │                               │
+   │──── SETUP ──────────────────→ │  建立音频传输通道
+   │←─── 200 OK ─────────────────── │
+   │                               │
+   │──── RECORD ─────────────────→ │  开始推流
+   │←─── 200 OK ─────────────────── │
+   │                               │
+   │════ RTP 数据持续发送 ══════════ │
+   */
+
 //RTSP握手(OPTIONS/ANNOUNCE/SETUP视频/SETUP音频/RECORD)
 bool RtspPusher::connect(const std::string& url,
     const std::vector<uint8_t>& sps,
