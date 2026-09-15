@@ -1,0 +1,18 @@
+# Visual Studio 缓存与用户本地设置
+.vs/
+*.user
+*.suo
+
+# 构建输出
+x64/Debug/
+
+# 二进制与调试文件
+*.exe
+*.pdb
+
+# 日志文件
+*.log
+log/
+
+# 临时导出文件
+sources_dump.txt
