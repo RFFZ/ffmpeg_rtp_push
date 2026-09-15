@@ -19,9 +19,9 @@ flowchart TD
     FR["FileReader<br/>AVCC 转 AnnexB<br/>time_base 转 90kHz pts<br/>EOF 自动循环"]
     SSV["StreamSource VideoFrame<br/>有界队列 max=5"]
     SSA["StreamSource AudioFrame<br/>有界队列 max=5"]
-    POLL["poller 线程<br/>onVideoFrames / onAudioFrames"]
-    GOP["GOP 缓存<br/>gop_video_ + gop_audio_<br/>32MB 上限 + pts 跳变检测"]
-    PACK["RTP 打包<br/>H264 切 NAL / FU-A<br/>AAC 封 AU-Header"]
+    POLL["poller 线程<br/>MediaSource::onVideoFrames / onAudioFrames"]
+    GOP["GOP 缓存（MediaSource 类）<br/>gop_video_ + gop_audio_<br/>32MB 上限 + pts 跳变检测<br/>poller 线程维护"]
+    PACK["RTP 打包（RtpPacker / AacRtpPacker 类）<br/>H264 切 NAL / FU-A<br/>AAC 封 AU-Header<br/>poller 线程执行"]
     RTSP["RtspPusher<br/>RTSP/TCP interleaved<br/>非阻塞发送 + 可写事件续发"]
     HC["重连线程池<br/>阻塞握手<br/>OPTIONS/ANNOUNCE/SETUP/RECORD<br/>指数退避 1s~10s"]
     ZLM["ZLMediaKit / RTSP 服务器"]
@@ -45,7 +45,9 @@ flowchart TD
 1. **ReaderPool**（SchedulePool 读线程）按文件帧率节奏调度，每路流一个周期任务：读一帧视频（含沿途音频）→ 推入 MediaSource → 返回帧间隔微秒数
 2. **FileReader** 负责解封装：AVCC 转 AnnexB、时间基转 RTP 90kHz pts、EOF 时带 pts 偏移循环
 3. **MediaSource** 每路流一个，`inputH264` / `inputAAC` 任意线程可调用，帧进入 `StreamSource` 有界队列（max=5，约 200ms 积压）后唤醒绑定的 poller 线程
-4. **poller 线程** 消费队列：维护 GOP 缓存 → RTP 打包 → 交给各 Session 的 RtspPusher 非阻塞发送
+4. **poller 线程**（每路流创建时绑定的 EventPoller 线程）消费队列，GOP 缓存与 RTP 打包均在此线程完成：
+   - **GOP 缓存**：由 `MediaSource` 类完成——成员 `gop_video_` / `gop_audio_` 在 `onVideoFrames` / `onAudioFrames` 中维护，连接建立时由 `dumpCachedGop` 倒出整链
+   - **RTP 打包**：由 `RtpPacker`（视频）与 `AacRtpPacker`（音频）完成——实例由 `MediaSource::Session` 持有（每个 RTSP 目标一套，支撑 1:N 广播），打包后交 RtspPusher 非阻塞发送
 5. **RtspPusher** 以 TCP interleaved（`$` + channel + len 封帧）发送；`recv()==0` 判定对端断开，由重连线程池阻塞重握手
 
 ### 线程分工（固定线程数，与流数无关）
@@ -58,7 +60,7 @@ flowchart TD
 
 ## GOP 缓存机制
 
-针对推流到 ZLMediaKit 时 GOP 过长导致的问题：播放器连接后等待下一个 I 帧期间触发轨道超时，进而丢弃音频。
+针对推流到 ZLMediaKit 时 GOP 过长导致的问题：播放器连接后等待下一个 I 帧期间触发轨道超时，进而丢弃音频。实现类为 `MediaSource`，全部逻辑运行在其绑定的 poller 线程上。
 
 - MediaSource 维护 `gop_video_` / `gop_audio_` 双缓冲：从最近 IDR 起保存完整视频帧链及对齐的音频帧
 - 会话连接建立时（`pending_key`）一次性倒出缓存 GOP，随后无缝衔接实时帧
