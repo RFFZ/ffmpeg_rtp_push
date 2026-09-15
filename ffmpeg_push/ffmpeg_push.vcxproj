@@ -148,17 +148,33 @@
   <ItemGroup>
     <ClCompile Include="aac_rtp_packer.cpp" />
     <ClCompile Include="ffmpeg_push.cpp" />
-    <ClCompile Include="logger.cpp" />
+    <ClCompile Include="file_reader.cpp" />
+    <ClCompile Include="kit\event_poller.cpp" />
+    <ClCompile Include="kit\logger.cpp" />
+    <ClCompile Include="kit\schedule_pool.cpp" />
+    <ClCompile Include="media_manager.cpp" />
+    <ClCompile Include="media_source.cpp" />
+    <ClCompile Include="reader_pool.cpp" />
     <ClCompile Include="rtp_packer.cpp" />
     <ClCompile Include="rtsp_pusher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aac_rtp_packer.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="logger.h" />
+    <ClInclude Include="file_reader.h" />
+    <ClInclude Include="frame_source.h" />
+    <ClInclude Include="kit\event_poller.h" />
+    <ClInclude Include="kit\lock_free_queue.h" />
+    <ClInclude Include="kit\logger.h" />
+    <ClInclude Include="kit\schedule_pool.h" />
+    <ClInclude Include="kit\semaphore.h" />
+    <ClInclude Include="kit\stream_source.h" />
+    <ClInclude Include="kit\thread_pool.h" />
+    <ClInclude Include="media_manager.h" />
+    <ClInclude Include="media_source.h" />
+    <ClInclude Include="reader_pool.h" />
     <ClInclude Include="rtp_packer.h" />
     <ClInclude Include="rtsp_pusher.h" />
-    <ClInclude Include="semaphore.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

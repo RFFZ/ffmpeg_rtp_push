@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\kit">
+      <UniqueIdentifier>{A1B2C3D4-E5F6-4A7B-8C9D-0E1F2A3B4C5D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\kit">
+      <UniqueIdentifier>{B2C3D4E5-F6A7-4B8C-9D0E-1F2A3B4C5D6E}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ffmpeg_push.cpp">
@@ -24,11 +30,29 @@
     <ClCompile Include="rtsp_pusher.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="logger.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="aac_rtp_packer.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="file_reader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="media_manager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="media_source.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="reader_pool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="kit\event_poller.cpp">
+      <Filter>源文件\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="kit\logger.cpp">
+      <Filter>源文件\kit</Filter>
+    </ClCompile>
+    <ClCompile Include="kit\schedule_pool.cpp">
+      <Filter>源文件\kit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,14 +65,44 @@
     <ClInclude Include="common.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="logger.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="semaphore.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="aac_rtp_packer.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="file_reader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="frame_source.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="media_manager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="media_source.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="reader_pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="kit\event_poller.h">
+      <Filter>头文件\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="kit\lock_free_queue.h">
+      <Filter>头文件\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="kit\logger.h">
+      <Filter>头文件\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="kit\schedule_pool.h">
+      <Filter>头文件\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="kit\semaphore.h">
+      <Filter>头文件\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="kit\stream_source.h">
+      <Filter>头文件\kit</Filter>
+    </ClInclude>
+    <ClInclude Include="kit\thread_pool.h">
+      <Filter>头文件\kit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

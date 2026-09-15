@@ -141,7 +141,7 @@ private:
 
     bool running_ = true;
     std::mutex mtx_;
-    semaphore sem_;
+    kit::semaphore sem_;
     // pair: <日志条目, 目标logger>
     std::queue<std::pair<LogContext::Ptr, Logger*>> queue_;
     std::thread thread_;

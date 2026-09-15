@@ -4,6 +4,8 @@
 #include <mutex>
 #include <condition_variable>
 
+
+namespace kit {
 class semaphore {
 public:
     explicit semaphore(size_t initial = 0) {
@@ -58,5 +60,7 @@ private:
     std::condition_variable_any _condition;
 #endif
 };
+
+} // namespace kit
 
 #endif

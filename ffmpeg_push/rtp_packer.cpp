@@ -21,20 +21,6 @@ void RtpPacker::packFrame(const uint8_t* data, int size, uint32_t timestamp) {
         if (i + 4 <= size &&
             data[i] == 0 && data[i + 1] == 0 && data[i + 2] == 0 && data[i + 3] == 1) {
             if (nalu_start) {
-                //这是典型的滑动窗口思路，看到边界才处理上一段数据
-                /*
-                nalu_start 记录的是"上一个起始码结束的位置"
-                也就是当前NALU数据的开头
-
-                遇到下一个起始码时：
-                  → 当前位置(data+i) 就是上一个NALU的结尾
-                  → 发送 nalu_start 到 data+i 之间的数据
-                  → 然后把 nalu_start 更新到新NALU的开头
-
-                所以是"看到下一个起始码才发上一个NALU"
-                最后一个NALU没有下一个起始码
-                → 循环结束后单独处理
-                */
                 sendRtpPacket(nalu_start, (data + i) - nalu_start, timestamp, false);
             }
             nalu_start = data + i + 4;

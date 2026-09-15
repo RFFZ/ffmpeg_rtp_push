@@ -7,6 +7,8 @@
 #include <atomic>
 #include <vector>
 #include <cstdint>
+
+namespace kit {
 /*
 *  CPU/编译器为了性能，把没有数据依赖的指令并行或重排
 *  CPU 保证：单线程视角下，乱序执行的结果和顺序执行完全一样。
@@ -241,5 +243,7 @@ private:
     alignas(CACHE_LINE) std::atomic<size_t> head_;
     alignas(CACHE_LINE) std::atomic<size_t> tail_;
 };
+
+} // namespace kit
 
 #endif
